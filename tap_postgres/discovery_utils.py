@@ -249,12 +249,18 @@ def schema_for_column_datatype(col):
         schema['format'] = 'time'
         return schema
 
-    if data_type in ('date', 'timestamp without time zone', 'timestamp with time zone'):
+    if data_type in ('date', 'timestamp without time zone'):
         schema['type'] = nullable_column('string', col.is_primary_key)
 
         schema['format'] = 'date-time'
         return schema
+    
+    if data_type == 'timestamp with time zone':
+        schema['type'] = nullable_column('string', col.is_primary_key)
 
+        schema['format'] = 'date-time-tz'
+        return schema
+    
     if data_type in FLOAT_TYPES:
         schema['type'] = nullable_column('number', col.is_primary_key)
         return schema
